@@ -1952,6 +1952,15 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
         currentSearch = PlaceSearch(filter: .top, type: .location, origin: .user, sortStyle: .links, string: nil, region: region, localizedDescription: title, searchResult: searchResult, siteURL: articleURL.wmf_site)
     }
     
+    @objc public func showArticlesAroundLocation(_ location: CLLocation) {
+        guard view != nil else { // force view instantiation
+            return
+        }
+        
+        panMapToNextLocationUpdate = false
+        zoomAndPanMapView(toLocation: location)
+    }
+    
     fileprivate func searchForFirstSearchSuggestion() {
         if !searchSuggestionController.searches[PlaceSearchSuggestionController.completionSection].isEmpty {
             currentSearch = searchSuggestionController.searches[PlaceSearchSuggestionController.completionSection][0]

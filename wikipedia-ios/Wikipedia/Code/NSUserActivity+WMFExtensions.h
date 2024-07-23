@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, WMFUserActivityType) {
@@ -41,6 +42,8 @@ extern NSString *const WMFNavigateToActivityNotification;
 + (nullable instancetype)wmf_activityForURL:(NSURL *)url;
 
 - (WMFUserActivityType)wmf_type;
+
+- (nullable CLLocation *)wmf_location;
 
 - (nullable NSString *)wmf_searchTerm;
 

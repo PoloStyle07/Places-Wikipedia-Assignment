@@ -74,6 +74,28 @@ __attribute__((annotate("returns_localized_nsstring"))) static inline NSString *
     return activity;
 }
 
++ (instancetype) wmf_placesLocationActivityWithURL:(NSURL *)activityURL {
+    NSURLComponents *components = [NSURLComponents componentsWithURL:activityURL resolvingAgainstBaseURL:NO];
+    NSString *coordinate = nil;
+    for (NSURLQueryItem *item in components.queryItems) {
+        if ([item.name isEqualToString:@"WMFPlacesLocation"]) {
+            NSArray *latLong = [item.value componentsSeparatedByString:@"+"];
+            if (latLong.count == 2) {
+                coordinate = item.value;
+            }
+            break;
+        }
+    }
+    
+    NSUserActivity *activity = [self wmf_pageActivityWithName:@"Places"];
+    if (coordinate) {
+        NSMutableDictionary *userInfo = [activity.userInfo mutableCopy];
+        [userInfo setObject:coordinate forKey:@"coordinate"];
+        activity.userInfo = userInfo;
+    }
+    return activity;
+}
+
 + (instancetype)wmf_exploreViewActivity {
     NSUserActivity *activity = [self wmf_pageActivityWithName:@"Explore"];
     return activity;
@@ -123,6 +145,8 @@ __attribute__((annotate("returns_localized_nsstring"))) static inline NSString *
         return [self wmf_contentActivityWithURL:url];
     } else if ([url.host isEqualToString:@"explore"]) {
         return [self wmf_exploreViewActivity];
+    } else if ([url.host isEqualToString:@"places"] && [url.query hasPrefix:@"WMFPlacesLocation"]) {
+        return [self wmf_placesLocationActivityWithURL:url];
     } else if ([url.host isEqualToString:@"places"]) {
         return [self wmf_placesActivityWithURL:url];
     } else if ([url.host isEqualToString:@"saved"]) {
@@ -233,6 +257,24 @@ __attribute__((annotate("returns_localized_nsstring"))) static inline NSString *
     } else {
         return WMFUserActivityTypeLink;
     }
+}
+
+- (nullable CLLocation *)wmf_location {
+    CLLocation *location = nil;
+    NSString *coordinate = self.userInfo[@"coordinate"];
+    if (coordinate) {
+        NSArray *latLong = [coordinate componentsSeparatedByString:@"+"];
+        NSScanner *latitude = [NSScanner scannerWithString:[latLong objectAtIndex:0]];
+        NSScanner *longitude = [NSScanner scannerWithString:[latLong objectAtIndex:1]];
+        
+        CLLocationDegrees lat;
+        CLLocationDegrees lon;
+        if ([latitude scanDouble:&lat] && [longitude scanDouble:&lon]) {
+            location = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
+        }
+    }
+
+    return location;
 }
 
 - (nullable NSString *)wmf_searchTerm {
