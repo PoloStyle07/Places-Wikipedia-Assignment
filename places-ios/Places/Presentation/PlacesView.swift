@@ -22,6 +22,8 @@ struct PlacesView: View {
 
 #Preview {
     PlacesView(
-        viewModel: PlacesViewModel()
+        viewModel: PlacesViewModel(
+            locationsRepository: PreviewLocationsRepository()
+        )
     )
 }

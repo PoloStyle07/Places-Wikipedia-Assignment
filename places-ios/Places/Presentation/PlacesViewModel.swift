@@ -9,4 +9,9 @@ import Foundation
 
 final class PlacesViewModel: ObservableObject {
     
+    private let locationsRepository: LocationsRepositoryProtocol
+    
+    init(locationsRepository: LocationsRepositoryProtocol) {
+        self.locationsRepository = locationsRepository
+    }
 }

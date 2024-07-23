@@ -11,8 +11,12 @@ import SwiftUI
 struct PlacesApp: App {
     var body: some Scene {
         WindowGroup {
+            let locationsRepository = LocationsRepository(networkClient: NetworkClient())
+            
             PlacesView(
-                viewModel: PlacesViewModel()
+                viewModel: PlacesViewModel(
+                    locationsRepository: locationsRepository
+                )
             )
         }
     }
