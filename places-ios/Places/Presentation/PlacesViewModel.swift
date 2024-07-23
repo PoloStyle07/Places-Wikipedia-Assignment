@@ -31,10 +31,6 @@ final class PlacesViewModel: ObservableObject {
     func errorRetry() {
         loadLocations()
     }
-    
-    func selected(location: Location) {
-        print("\(location) selected")
-    }
 }
 
 private extension PlacesViewModel {

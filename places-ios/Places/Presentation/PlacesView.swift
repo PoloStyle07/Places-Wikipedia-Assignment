@@ -51,9 +51,7 @@ struct PlacesView: View {
         VStack {
             List {
                 ForEach(viewModel.locations, id:\.self) { location in
-                    PlacesItemView(location: location) {
-                        viewModel.selected(location: location)
-                    }
+                    PlacesLinkView(location: location)
                 }
             }
             .listStyle(PlainListStyle())
