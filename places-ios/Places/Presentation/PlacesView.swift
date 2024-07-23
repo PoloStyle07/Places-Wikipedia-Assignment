@@ -16,14 +16,57 @@ struct PlacesView: View {
     }
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            if viewModel.viewState == .loading {
+                loadingView
+            } else if viewModel.viewState == .error {
+                errorView
+            } else if viewModel.viewState == .success {
+                listView
+            }
+        }
+        .navigationTitle("Places")
+        .navigationBarTitleDisplayMode(.inline)
+        .animation(.easeInOut, value: viewModel.viewState)
+        .onAppear(perform: viewModel.onAppear)
+    }
+    
+    private var loadingView: some View {
+        ProgressView()
+            .progressViewStyle(.circular)
+            .scaleEffect(2.0)
+    }
+    
+    private var errorView: some View {
+        VStack {
+            Spacer()
+            Text("Error! Could not load places")
+            Button("Try again", action: viewModel.errorRetry)
+                .buttonStyle(BorderedProminentButtonStyle())
+            Spacer()
+        }
+    }
+    
+    private var listView: some View {
+        VStack {
+            List {
+                ForEach(viewModel.locations, id:\.self) { location in
+                    PlacesItemView(location: location) {
+                        viewModel.selected(location: location)
+                    }
+                }
+            }
+            .listStyle(PlainListStyle())
+        }
     }
 }
 
 #Preview {
-    PlacesView(
-        viewModel: PlacesViewModel(
-            locationsRepository: PreviewLocationsRepository()
+    NavigationStack {
+        PlacesView(
+            viewModel: PlacesViewModel(
+                locationsRepository: PreviewLocationsRepository()
+            )
         )
-    )
+    }
 }

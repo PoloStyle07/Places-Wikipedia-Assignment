@@ -13,11 +13,13 @@ struct PlacesApp: App {
         WindowGroup {
             let locationsRepository = LocationsRepository(networkClient: NetworkClient())
             
-            PlacesView(
-                viewModel: PlacesViewModel(
-                    locationsRepository: locationsRepository
+            NavigationStack {
+                PlacesView(
+                    viewModel: PlacesViewModel(
+                        locationsRepository: locationsRepository
+                    )
                 )
-            )
+            }
         }
     }
 }
