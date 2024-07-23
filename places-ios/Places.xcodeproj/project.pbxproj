@@ -109,6 +109,15 @@
 			path = AddCustomPlace;
 			sourceTree = "<group>";
 		};
+		AA0008A32C50155000E9B5D4 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				AA00089B2C4FF8CC00E9B5D4 /* Places */,
+				AA00089C2C4FF8D700E9B5D4 /* AddCustomPlace */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
 		AA2CAE2D2C4F962A00ABFC1D = {
 			isa = PBXGroup;
 			children = (
@@ -187,8 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				AA9FAE0C2C4FBC460022C2B0 /* Components */,
-				AA00089B2C4FF8CC00E9B5D4 /* Places */,
-				AA00089C2C4FF8D700E9B5D4 /* AddCustomPlace */,
+				AA0008A32C50155000E9B5D4 /* Screens */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
