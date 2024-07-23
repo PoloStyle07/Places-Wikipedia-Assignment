@@ -55,6 +55,7 @@ struct PlacesView: View {
                 }
             }
             .listStyle(PlainListStyle())
+            .accessibilityLabel("Places, List")
             Button("Open Custom Place", action: viewModel.addCustomPlace)
                 .buttonStyle(BorderedProminentButtonStyle())
                 .padding()

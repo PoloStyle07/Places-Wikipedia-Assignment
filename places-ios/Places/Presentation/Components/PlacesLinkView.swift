@@ -24,6 +24,8 @@ struct PlacesLinkView: View {
                 }
             }
         }
+        .accessibilityElement()
+        .accessibilityLabel("\(location.name ?? "Unknown") place, Button, Link")
     }
     
     private var url: URL {

@@ -29,6 +29,8 @@ struct AddCustomPlaceView: View {
                 }
             }
             .buttonStyle(BorderedProminentButtonStyle())
+            .accessibilityElement()
+            .accessibilityLabel("Open Place, Button, Link")
             Spacer()
         }
         .padding(16)

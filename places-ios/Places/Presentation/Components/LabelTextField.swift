@@ -21,6 +21,8 @@ struct LabelTextField: View {
                         .stroke(.black)
                 )
         }
+        .accessibilityElement()
+        .accessibilityLabel("\(title), Textfield")
     }
 }
 
