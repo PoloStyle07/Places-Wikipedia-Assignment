@@ -41,3 +41,18 @@ final class PreviewLocationsRepository: LocationsRepositoryProtocol {
         .success(locations)
     }
 }
+
+final class MockLocationsRepository: LocationsRepositoryProtocol {
+    
+    private(set) var getLocationsCallCount = 0
+    var getLocationsHandler: (() -> Result<[Location], NetworkError>)?
+    
+    func getLocations() async -> Result<[Location], NetworkError> {
+        getLocationsCallCount += 1
+        if let getLocationsHandler = getLocationsHandler {
+            return getLocationsHandler()
+        }
+        fatalError("getLocationsHandler can't have a default value")
+    }
+    
+}

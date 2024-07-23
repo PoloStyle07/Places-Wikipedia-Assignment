@@ -15,6 +15,7 @@ struct LabelTextField: View {
         VStack(alignment: .leading) {
             Text(title)
             TextField("", text: input)
+                .accessibilityIdentifier("labelTextField")
                 .padding(5)
                 .overlay(
                     RoundedRectangle(cornerRadius: 5)

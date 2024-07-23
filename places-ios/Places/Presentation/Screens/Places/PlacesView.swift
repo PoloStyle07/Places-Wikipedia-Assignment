@@ -16,19 +16,22 @@ struct PlacesView: View {
     }
     
     var body: some View {
-        VStack {
-            if viewModel.viewState == .loading {
+        return VStack {
+            switch viewModel.viewState {
+            case .loading:
                 loadingView
-            } else if viewModel.viewState == .error {
+            case .error:
                 errorView
-            } else if viewModel.viewState == .success {
+            case .success:
                 listView
             }
         }
         .navigationTitle("Places")
         .navigationBarTitleDisplayMode(.inline)
         .animation(.easeInOut, value: viewModel.viewState)
-        .onAppear(perform: viewModel.onAppear)
+        .task {
+            await viewModel.onAppear()
+        }
     }
     
     private var loadingView: some View {
@@ -41,8 +44,12 @@ struct PlacesView: View {
         VStack {
             Spacer()
             Text("Error! Could not load places")
-            Button("Try again", action: viewModel.errorRetry)
-                .buttonStyle(BorderedProminentButtonStyle())
+            Button("Try again") {
+                Task {
+                    await viewModel.errorRetry()
+                }
+            }
+            .buttonStyle(BorderedProminentButtonStyle())
             Spacer()
         }
     }
@@ -57,6 +64,7 @@ struct PlacesView: View {
             .listStyle(PlainListStyle())
             .accessibilityLabel("Places, List")
             Button("Open Custom Place", action: viewModel.addCustomPlace)
+                .accessibilityIdentifier("customPlaceButton")
                 .buttonStyle(BorderedProminentButtonStyle())
                 .padding()
             Spacer()

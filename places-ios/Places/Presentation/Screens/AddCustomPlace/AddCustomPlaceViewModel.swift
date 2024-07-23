@@ -30,4 +30,8 @@ final class AddCustomPlaceViewModel: ObservableObject {
             return nil
         }
     }
+    
+    func back() {
+        coordinator.back()
+    }
 }

@@ -54,7 +54,16 @@ struct AppCoordinator: View, AppCoordinatorProtocol {
     }
 }
 
-struct PreviewAppCoordinator: AppCoordinatorProtocol {
-    func showAddCustomPlace() { }
-    func back() { }
+final class PreviewAppCoordinator: AppCoordinatorProtocol {
+    
+    private(set) var showAddCustomPlaceCallCount = 0
+    private(set) var backCallCount = 0
+    
+    func showAddCustomPlace() {
+        showAddCustomPlaceCallCount += 1
+    }
+    
+    func back() {
+        backCallCount += 1
+    }
 }

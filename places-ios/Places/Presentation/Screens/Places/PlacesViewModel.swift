@@ -15,8 +15,8 @@ final class PlacesViewModel: ObservableObject {
         case error
     }
     
-    @Published var locations: [Location] = []
-    @Published var viewState: ViewState = .loading
+    private(set) var locations: [Location] = []
+    @Published private(set) var viewState: ViewState = .loading
     
     private let coordinator: AppCoordinatorProtocol
     private let locationsRepository: LocationsRepositoryProtocol
@@ -29,12 +29,12 @@ final class PlacesViewModel: ObservableObject {
         self.locationsRepository = locationsRepository
     }
     
-    func onAppear() {
-        loadLocations()
+    func onAppear() async {
+        await loadLocations()
     }
     
-    func errorRetry() {
-        loadLocations()
+    func errorRetry() async {
+        await loadLocations()
     }
     
     func addCustomPlace() {
@@ -43,26 +43,23 @@ final class PlacesViewModel: ObservableObject {
 }
 
 private extension PlacesViewModel {
-    func loadLocations() {
-        viewState = .loading
+    func loadLocations() async {
+        await MainActor.run {
+            viewState = .loading
+        }
         
-        Task {
-            let result = await locationsRepository.getLocations()
-            switch result {
-            case .success(let locationsResponse):
-                Task {
-                    await MainActor.run {
-                        locations = locationsResponse
-                        viewState = .success
-                    }
-                }
-            case .failure(let error):
-                print("Locations load error: \(error)")
-                Task {
-                    await MainActor.run {
-                        viewState = .error
-                    }
-                }
+        let result = await locationsRepository.getLocations()
+        switch result {
+        case .success(let locationsResponse):
+            await MainActor.run {
+                locations = locationsResponse
+                viewState = .success
+            }
+        case .failure(let error):
+            print("Locations load error: \(error)")
+            await MainActor.run {
+                locations = []
+                viewState = .error
             }
         }
     }

@@ -83,6 +83,12 @@ The solution was to use a SwiftUI View with a NavigationStack as the root view. 
 The AppCoordinator view then handles all the navigation between screens from it's NavigationStack.
 The AppCoordinator itself is never displayed as the rootview of the NavigationStack can be set to a different view.
 
+## Testing
+
+The MVVM-C architecture works quite well for testing as it decouples the logic from the UI.
+The project includes some initial ViewModel unit tests to illustrate how the logic can be tested separately from the UI.
+Next to that using accessibilityIdentifiers the UI can be tested without knowing the internal implementation using UI tests. An initial example of this for the 'add custom place' error case is also added.
+
 # 2. Wikipedia iOS modifications
 
 Note: There is a bug with the general implementation of all deeplinks in the Wikipedia app. If the view is not already instantiated, the Wikipedia app will open but it won't navigate to the right tab and data.
