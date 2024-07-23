@@ -18,9 +18,14 @@ final class PlacesViewModel: ObservableObject {
     @Published var locations: [Location] = []
     @Published var viewState: ViewState = .loading
     
+    private let coordinator: AppCoordinatorProtocol
     private let locationsRepository: LocationsRepositoryProtocol
     
-    init(locationsRepository: LocationsRepositoryProtocol) {
+    init(
+        coordinator: AppCoordinatorProtocol,
+        locationsRepository: LocationsRepositoryProtocol
+    ) {
+        self.coordinator = coordinator
         self.locationsRepository = locationsRepository
     }
     
@@ -30,6 +35,10 @@ final class PlacesViewModel: ObservableObject {
     
     func errorRetry() {
         loadLocations()
+    }
+    
+    func addCustomPlace() {
+        coordinator.showAddCustomPlace()
     }
 }
 

@@ -55,6 +55,10 @@ struct PlacesView: View {
                 }
             }
             .listStyle(PlainListStyle())
+            Button("Open Custom Place", action: viewModel.addCustomPlace)
+                .buttonStyle(BorderedProminentButtonStyle())
+                .padding()
+            Spacer()
         }
     }
 }
@@ -63,6 +67,7 @@ struct PlacesView: View {
     NavigationStack {
         PlacesView(
             viewModel: PlacesViewModel(
+                coordinator: PreviewAppCoordinator(),
                 locationsRepository: PreviewLocationsRepository()
             )
         )

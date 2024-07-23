@@ -14,11 +14,7 @@ struct PlacesApp: App {
             let locationsRepository = LocationsRepository(networkClient: NetworkClient())
             
             NavigationStack {
-                PlacesView(
-                    viewModel: PlacesViewModel(
-                        locationsRepository: locationsRepository
-                    )
-                )
+                AppCoordinator(locationsRepository: locationsRepository)
             }
         }
     }
